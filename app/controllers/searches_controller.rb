@@ -29,17 +29,20 @@ class SearchesController < ApplicationController
   # POST /searches
   # POST /searches.json
   def create
-    @search = Search.new(search_params)
+    search_term = search_params["searched_name"]
+    search_artist(search_term)
 
-    respond_to do |format|
-      if @search.save
-        format.html { redirect_to @search, notice: 'Search was successfully created.' }
-        format.json { render :show, status: :created, location: @search }
-      else
-        format.html { render :new }
-        format.json { render json: @search.errors, status: :unprocessable_entity }
-      end
-    end
+    # @search = Search.new(search_params)
+
+    # respond_to do |format|
+    #   if @search.save
+    #     format.html { redirect_to @search, notice: 'Search was successfully created.' }
+    #     format.json { render :show, status: :created, location: @search }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @search.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /searches/1
@@ -75,5 +78,36 @@ class SearchesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def search_params
       params.require(:search).permit(:searched_name)
+    end
+
+    def search_artist(search_term)
+      sanitized_search_term = search_term.html_safe
+      
+      # setup connection to API
+      conn = Faraday.new(
+        url: 'http://theaudiodb.com/api/v1/json/1/',
+        headers: {'Content-Type' => 'application/json'}
+      ) do |conn|
+        # specify to follow redirects so that cloudfare won't cause errors
+        conn.use FaradayMiddleware::FollowRedirects, limit: 5
+        conn.adapter Faraday.default_adapter
+      end
+
+      # make request to API
+      response = conn.get('search.php') do |req|
+        req.params["s"] = sanitized_search_term
+      end
+
+      # parse response into JSON
+      json_response = JSON.parse(response.body)
+      
+      # redirect to search page if response was unsuccessful or empty
+      if response.status != 200 || json_response["artists"].nil?
+        # need to show alert on redirect because of bad or empty response
+        redirect_to :controller => 'searches', :action => 'new' 
+      end
+
+      # log response for debugging
+      puts json_response
     end
 end
