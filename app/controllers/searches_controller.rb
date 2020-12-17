@@ -74,6 +74,6 @@ class SearchesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def search_params
-      params.require(:search).permit(:searched_name, :success, :response)
+      params.require(:search).permit(:searched_name)
     end
 end
