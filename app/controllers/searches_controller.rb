@@ -101,13 +101,26 @@ class SearchesController < ApplicationController
       # parse response into JSON
       json_response = JSON.parse(response.body)
       
+      # create search object
+      search = Search.new
+      search.searched_name = sanitized_search_term
+
       # redirect to search page if response was unsuccessful or empty
       if response.status != 200 || json_response["artists"].nil?
+        search.success = false # mark search unsuccessful
+        search.save 
+
         # need to show alert on redirect because of bad or empty response
-        redirect_to :controller => 'searches', :action => 'new' 
+        
+        redirect_to :controller => 'searches', :action => 'new' and return
       end
 
       # log response for debugging
       puts json_response
+
+      # search was a success, add response and save to database
+      search.success = true
+      search.response = json_response
+      search.save
     end
 end
