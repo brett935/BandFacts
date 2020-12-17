@@ -110,9 +110,8 @@ class SearchesController < ApplicationController
         search.success = false # mark search unsuccessful
         search.save 
 
-        # need to show alert on redirect because of bad or empty response
-        
-        redirect_to :controller => 'searches', :action => 'new' and return
+        # show alert on redirect because of bad or empty response
+        redirect_to new_search_path, notice: 'Search was unsuccessful.' and return
       end
 
       # log response for debugging
@@ -122,5 +121,7 @@ class SearchesController < ApplicationController
       search.success = true
       search.response = json_response
       search.save
+
+      redirect_to search, notice: 'Search was successful.' and return
     end
 end
