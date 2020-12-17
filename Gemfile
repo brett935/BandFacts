@@ -58,3 +58,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "faraday", "~> 1.1"
 
 gem "faraday_middleware", "~> 1.0"
+
+gem "rspec-rails", "~> 4.0"
