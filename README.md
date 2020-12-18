@@ -1,4 +1,4 @@
-# README
+# BandFacts
 
 This app searches theaudiodb for a band name and then returns the response and displays the bands name and biography.
 
