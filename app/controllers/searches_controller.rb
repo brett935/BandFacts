@@ -122,6 +122,6 @@ class SearchesController < ApplicationController
       search.response = json_response
       search.save
 
-      redirect_to search, notice: 'Search was successful.' and return
+      redirect_to search and return
     end
 end

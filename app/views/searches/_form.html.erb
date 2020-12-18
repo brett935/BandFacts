@@ -10,13 +10,15 @@
       </ul>
     </div>
   <% end %>
+  
+  <p id="notice"><%= notice %></p>
 
   <div class="field">
-    <%= form.label :searched_name %>
+    <%= form.label "Enter a band name: " %>
     <%= form.text_field :searched_name %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "Search" %>
   </div>
 <% end %>

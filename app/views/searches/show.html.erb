@@ -1,17 +1,14 @@
+<h1>Band Tidbits</h1>
+
 <p>
-  <strong>Searched name:</strong>
-  <%= @search.searched_name %>
+  <strong>Name:</strong>
+    <%= @search.response["artists"].first["strArtist"] %>
 </p>
 
 <p>
-  <strong>Success:</strong>
-  <%= @search.success %>
+  <strong>Biography:</strong>
+    <%= @search.response["artists"].first["strBiographyEN"] %>
 </p>
 
-<p>
-  <strong>Response:</strong>
-  <%= @search.response %>
-</p>
 
-<%= link_to 'Edit', edit_search_path(@search) %> |
-<%= link_to 'Back', searches_path %>
+<%= link_to 'Back', new_search_path %>
