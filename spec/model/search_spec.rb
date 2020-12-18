@@ -1,4 +1,4 @@
-# spec/models/search_spec.rb
+# spec/model/search_spec.rb
 require 'rails_helper'
 
 RSpec.describe Search, :type => :model do
