@@ -83,6 +83,11 @@ class SearchesController < ApplicationController
     def search_artist(search_term)
       sanitized_search_term = search_term.html_safe
       
+      # check for empty search (may occur after characters that aren't safe for HTML are stripped)
+      if sanitized_search_term.empty?
+        redirect_to new_search_path, notice: 'Search was unsuccessful.' and return
+      end
+
       # setup connection to API
       conn = Faraday.new(
         url: 'http://theaudiodb.com/api/v1/json/1/',
