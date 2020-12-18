@@ -27,4 +27,12 @@ RSpec.describe 'Search a Band', type: :feature do
             expect(page).to have_content('Search was unsuccessful.')
         end
     end
+
+    describe 'search page' do
+        it 'empty search shows warning message' do
+            visit new_search_path
+            find('#search_band').click
+            expect(page).to have_content('Search was unsuccessful.')
+        end
+    end
 end
